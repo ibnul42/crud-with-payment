@@ -64,7 +64,7 @@ const Login = () => {
         if (showSignupField) {
             console.log('signup')
             try {
-                const res = await axios.post('/api/users', inputValue)
+                const res = await axios.post('https://crud-with-payment.vercel.app/api/users', inputValue)
                 setShowSignupField(false)
                 toast.success("Signup successful")
                 console.log(res)
@@ -74,7 +74,7 @@ const Login = () => {
         } else {
             console.log('login')
             try {
-                const res = await axios.post('/api/users/login', { email, password })
+                const res = await axios.post('https://crud-with-payment.vercel.app/api/users/login', { email, password })
                 localStorage.setItem('usertoken', res.data.token)
                 setUser(res.data)
                 toast.success("Login Successful")

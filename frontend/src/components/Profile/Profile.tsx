@@ -59,7 +59,7 @@ const Profile = () => {
         }
 
         try {
-            const res = await axios.put('/api/users/me/update', {
+            const res = await axios.put('https://crud-with-payment.vercel.app/api/users/me/update', {
                 id,
                 email,
                 name,

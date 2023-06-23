@@ -13,7 +13,7 @@ const Subscription = () => {
             toast.success("Already subscribed!")
         }
         else if (user && user.id && user.id.length > 0) {
-            axios.post(`http://localhost:4000/api/stripe/create-checkout-session`, {
+            axios.post(`https://crud-with-payment.vercel.app/api/stripe/create-checkout-session`, {
                 id: user.id
             })
                 .then((res) => {
