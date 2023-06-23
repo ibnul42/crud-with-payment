@@ -57,7 +57,7 @@ function App() {
   ])
 
   useEffect(() => {
-    axios.get('/api/users/me', {
+    axios.get('https://crud-with-payment.vercel.app/api/users/me', {
       headers: { Authorization: `Bearer ${localStorage.getItem('usertoken')}` }
     })
       .then(res => setUser(res.data))

@@ -52,6 +52,7 @@ let endpointSecret;
 
 router.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
   console.log("LISTENING");
+  console.log(req.body);
   const sig = req.headers['stripe-signature'];
 
   let data
@@ -122,7 +123,7 @@ const updateUserInfo = async (customer, userdata) => {
     const updatedProfile = await User.findByIdAndUpdate(id, {
       subscription: true
     })
-    // console.log("Update profile successful", updatedProfile)
+    console.log("Update profile successful",customer.metadata.userId, updatedProfile)
   } catch (error) {
     console.log("Update profile failed")
   }

@@ -20,7 +20,7 @@ const Login = () => {
     const { name, email, password, gender, birthDate } = inputValue
 
     useEffect(() => {
-        if (user.id) {
+        if (user?.id.length > 0) {
             navigate('/')
         }
     }, [user, navigate])
