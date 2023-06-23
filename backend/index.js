@@ -19,6 +19,9 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use('/api/stripe', stripe)
 app.use("/api/users", require("./routes/userRoutes"))
+app.get("/api/test", (req,res) => {
+  res.status(200).json({ message: 'test'})
+})
 
 const fs = require("fs")
 // app.get("/image", (req, res) => {

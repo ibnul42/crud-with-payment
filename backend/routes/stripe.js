@@ -3,7 +3,8 @@
 
 const express = require('express');
 const app = express();
-const Stripe = require('stripe')
+const Stripe = require('stripe');
+const User = require('../models/userModel');
 
 require('dotenv').config()
 
@@ -12,6 +13,7 @@ const router = express.Router()
 const stripe = Stripe((process.env.STRIPE_KEY))
 
 router.post('/create-checkout-session', async (req, res) => {
+  // console.log(req.body)
   const customer = await stripe.customers.create({
     metadata: {
       userId: req.body.id
@@ -33,7 +35,7 @@ router.post('/create-checkout-session', async (req, res) => {
     customer: customer.id,
     mode: 'payment',
     success_url: `http://localhost:3000/checkout-success`,
-    cancel_url: `http://localhost:3000/`,
+    cancel_url: `http://localhost:3000/checkout-fail`,
   });
 
   res.send({
@@ -46,11 +48,10 @@ router.post('/create-checkout-session', async (req, res) => {
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
 let endpointSecret;
-endpointSecret = "whsec_1b8087ee1e84b0778705c58075faacc82dbedfc9d59d3de5d2c7c394d827fd36";
+// endpointSecret = "whsec_1b8087ee1e84b0778705c58075faacc82dbedfc9d59d3de5d2c7c394d827fd36";
 
 router.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
   console.log("LISTENING");
-  console.log(req.body)
   const sig = req.headers['stripe-signature'];
 
   let data
@@ -70,7 +71,6 @@ router.post('/webhook', express.raw({ type: 'application/json' }), (req, res) =>
     data = event.data.object
     eventType = event.type
   } else {
-    console.log("aaaaa", req.body)
     data = req.body.data.object
     eventType = req.body.type
   }
@@ -79,13 +79,10 @@ router.post('/webhook', express.raw({ type: 'application/json' }), (req, res) =>
 
   // Handle the event
   if (eventType === 'checkout.session.completed') {
-    console.log('checkout.session.completed from server', data)
-    console.log('checkout.session.completed from server', data.customers)
     stripe.customers
       .retrieve(data.customer)
       .then((customer) => {
-        console.log("Successfully", customer)
-        console.log("data:", data)
+        updateUserInfo(customer, data)
       })
       .catch((error) => console.log("Failed to retrieve", error))
   }
@@ -93,5 +90,55 @@ router.post('/webhook', express.raw({ type: 'application/json' }), (req, res) =>
   // Return a 200 res to acknowledge receipt of the event
   res.send().end();
 });
+
+const updateUserInfo = async (customer, userdata) => {
+  // console.log("User information for update")
+  // console.log("Customer data:", customer)
+  // console.log("............")
+  // console.log("UserData for update", userdata)
+  // const { id, name, email, password, newPassword, gender, birthDate } = req.body
+
+  const id = customer.metadata.userId
+
+  // check if id is available
+  // if (!id) {
+  //   res.status(404)
+  //   throw new Error('Invalid User')
+  // }
+
+  const userExists = await User.findOne({ id })
+
+  // check if the user exists
+  // if (!userExists) {
+  //   res.status(404)
+  //   throw new Error('Invalid User')
+  // }
+
+  // console.log("USER: ", userExists)
+
+
+  // update the profile
+  try {
+    const updatedProfile = await User.findByIdAndUpdate(id, {
+      subscription: true
+    })
+    // console.log("Update profile successful", updatedProfile)
+  } catch (error) {
+    console.log("Update profile failed")
+  }
+
+  // if (updatedProfile) {
+  //     const user = await User.findOne({ email })
+  //     res.status(200)
+  //     res.json({
+  //         id: user.id,
+  //         name: user.name,
+  //         email: user.email,
+  //         gender: user.gender,
+  //         birthDate: user.birthDate,
+  //         token: generateToken(user._id)
+  //     })
+  // }
+}
 
 module.exports = router

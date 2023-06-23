@@ -30,7 +30,8 @@ const registerUser = asyncHandler(async (req, res) => {
         email,
         password: hashedPassword,
         gender,
-        birthDate
+        birthDate,
+        subscription: false
     })
 
     if (user) {
@@ -41,6 +42,7 @@ const registerUser = asyncHandler(async (req, res) => {
             email: user.email,
             gender: user.gender,
             birthDate: user.birthDate,
+            subscription: user.subscription,
             token: generateToken(user._id)
         })
     } else {
@@ -71,6 +73,7 @@ const LoginUser = asyncHandler(async (req, res) => {
             email: user.email,
             birthDate: user.birthDate,
             gender: user.gender,
+            subscription: user.subscription,
             token: generateToken(user._id)
         })
     } else {
@@ -85,7 +88,8 @@ const getMe = asyncHandler(async (req, res) => {
         name: req.user.name,
         email: req.user.email,
         birthDate: req.user.birthDate,
-        gender: req.user.gender
+        gender: req.user.gender,
+        subscription: req.user.subscription
     })
 })
 
@@ -141,6 +145,7 @@ const updateProfile = asyncHandler(async (req, res) => {
             email: user.email,
             gender: user.gender,
             birthDate: user.birthDate,
+            subscription: user.subscription,
             token: generateToken(user._id)
         })
     }

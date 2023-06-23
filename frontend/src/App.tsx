@@ -7,11 +7,11 @@ import Profile from './components/Profile/Profile';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
 import Payment from './components/Payment/Payment';
-
 import { ToastContainer } from 'react-toastify';
-import CheckoutSuccess from './components/CheckoutSuccess';
 import axios from 'axios';
 import { UserContext } from './contexts/userContext';
+import PaymentSuccess from './components/PaymentSuccess';
+import PaymentFail from './components/PaymentFail';
 
 function App() {
   const { user, setUser } = useContext(UserContext)
@@ -24,10 +24,10 @@ function App() {
           path: '/',
           element: <Home />
         },
-        {
-          path: '/',
-          element: <Home />
-        },
+        // {
+        //   path: '/',
+        //   element: <Home />
+        // },
         {
           path: '/profile',
           element: <Profile></Profile>
@@ -39,10 +39,18 @@ function App() {
         {
           path: '/login',
           element: <Login></Login>
-        },
+        }, 
         {
           path: '/checkout-success',
-          element: <CheckoutSuccess></CheckoutSuccess>
+          element: <PaymentSuccess></PaymentSuccess>
+        },
+        {
+          path: '/checkout-fail',
+          element: <PaymentFail></PaymentFail>
+        },
+        {
+          path: '*',
+          element: <Home />
         },
       ]
     }

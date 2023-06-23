@@ -7,6 +7,7 @@ export type User = {
   gender: string
   token: string
   birthDate: string
+  subscription: boolean
 }
 
 export interface UserContextInterface {
@@ -22,6 +23,7 @@ const defaultState = {
     token: "",
     gender: "",
     birthDate: "",
+    subscription: false
   },
   setUser: (user: User) => { },
 } as UserContextInterface
@@ -40,6 +42,7 @@ export default function UserProvider({ children }: UserProvideProps) {
     token: "",
     gender: "",
     birthDate: "",
+    subscription: false
   })
   return (
     <UserContext.Provider value={{ user, setUser }} >

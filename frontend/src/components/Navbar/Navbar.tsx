@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../contexts/userContext';
 
 const Navbar = () => {
+    const { user, setUser } = useContext(UserContext)
     const [isOpen, setIsOpen] = useState(false);
+    console.log(user)
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
+
+    const signOutHandler = () => {
+        localStorage.removeItem('usertoken');
+        setUser({
+            id: "",
+            name: "",
+            email: "",
+            token: "",
+            gender: "",
+            birthDate: "",
+            subscription: false
+        })
+    }
 
     return (
         <nav className="bg-gray-800">
@@ -42,18 +58,22 @@ const Navbar = () => {
                                 >
                                     Profile
                                 </Link>
-                                <Link
+                                {/* <Link
                                     to="/payment"
                                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                                 >
                                     Payment
-                                </Link>
-                                <Link
-                                    to="/login"
-                                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                                >
-                                    Sign In
-                                </Link>
+                                </Link> */}
+                                {user && user.email && user.email.length > 0 ?
+                                    <button className='border rounded text-white px-3 py-1' onClick={signOutHandler}>Sign Out</button> :
+                                    <Link
+                                        to="/login"
+                                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                                    >
+                                        Sign In
+                                    </Link>
+                                }
+
                             </div>
                         </div>
                     </div>

@@ -55,7 +55,7 @@ const Profile = () => {
         console.log(inputValue)
         e.preventDefault()
         const config = {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${localStorage.getItem('usertoken')}` },
         }
 
         try {
@@ -84,7 +84,7 @@ const Profile = () => {
                     <div> <span className='font-bold'> Name:</span> {user.name}</div>
                     <div> <span className='font-bold'> Gender:</span> {user.gender}</div>
                     <div> <span className='font-bold'> Date of Birth:</span>{user.birthDate}</div>
-                    <div> <span className='font-bold'> Subscription:</span> Activated</div>
+                    <div> <span className='font-bold'> Subscription:</span> {user.subscription ? 'Activated' : 'Deactivated'}</div>
                 </div>
                 <div>
                     <button

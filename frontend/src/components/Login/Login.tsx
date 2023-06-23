@@ -65,6 +65,8 @@ const Login = () => {
             console.log('signup')
             try {
                 const res = await axios.post('/api/users', inputValue)
+                setShowSignupField(false)
+                toast.success("Signup successful")
                 console.log(res)
             } catch (error) {
                 console.log(error)
