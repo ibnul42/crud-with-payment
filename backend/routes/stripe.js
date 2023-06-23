@@ -34,8 +34,8 @@ router.post('/create-checkout-session', async (req, res) => {
     ],
     customer: customer.id,
     mode: 'payment',
-    success_url: `http://localhost:3000/checkout-success`,
-    cancel_url: `http://localhost:3000/checkout-fail`,
+    success_url: `https://lovely-lollipop-1e977d.netlify.app/checkout-success`,
+    cancel_url: `https://lovely-lollipop-1e977d.netlify.app/checkout-fail`,
   });
 
   res.send({
